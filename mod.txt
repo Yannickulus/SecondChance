@@ -1,0 +1,9 @@
+[mod]
+name="Second Chance"
+id="second_chance"
+version="0.1.0"
+
+[autoload]
+SecondChance="res://SecondChance/Main.gd"
+
+[registry]
