@@ -2,20 +2,28 @@ extends Node
 
 const MCM_HELPERS = "res://ModConfigurationMenu/Scripts/Doink Oink/MCM_Helpers.tres"
 
-var _lib = null
-var _gameData = preload("res://Resources/GameData.tres")
+# Config
+const MOD_ID := "SecondChance"
+const FRIENDLY_NAME := "Second Chance"
+const DESCRIPTION := "Token that blocks permadeath once."
 
-# True only while Character.Death() runs
-var _dying: bool = false
-# True if this death happened in a permadeath zone
-var _permadeathZone: bool = false
-var _tokenUsed: bool = false
-var _spawn_action := ""
-const SPAWN_FALLBACK_KEY := KEY_F5
+const SPAWN_ACTION := "SecondChance_SpawnToken"   # MCM uses this as the InputMap action name
+const RARITY_ID := "SecondChance_Rarity"
 
-const TOKEN_ID := "Second_Chance_Token"  # == ItemData.file == registry key
+# used when MCM isn't installed
+const SPAWN_FALLBACK_KEY: Key = KEY_F5
+const DEFAULT_RARITY := 2   
+
+const TOKEN_ID: String = "Second_Chance_Token"  # == ItemData.file == registry key
 
 var _interface = null
+var _lib = null
+var _config = null
+var _gameData = preload("res://Resources/GameData.tres")
+
+var _dying: bool = false # True only while Character.Death() runs
+var _permadeathZone: bool = false # True if this death happened in a permadeath zone
+var _tokenUsed: bool = false
 
 func _ready():
 	if Engine.has_meta("RTVModLib"):
@@ -27,7 +35,7 @@ func _ready():
 			_lib.frameworks_ready.connect(_on_lib_ready)
 
 func _register_objects():
-	#var token: Resource = load("res://mods/SecondChance/Second_Chance_Token.tres")  # an ItemData .tres
+	# var token: Resource = load("res://SecondChance/Second_Chance_Token.tres")  # an ItemData .tres
 	var result: Dictionary = _lib.register_item({
 		TOKEN_ID: {
 			"item_path":   "res://SecondChance/Second_Chance_Token.tres",
@@ -43,22 +51,69 @@ func _on_lib_ready():
 	print("Second Chance: Loaded")
 
 func _setup_mcm():
-	if !ResourceLoader.exists(MCM_HELPERS):
-		print("Secondchance: MCM not installed, using defaults")
+	var McmHelpers = load(MCM_HELPERS)
+	if McmHelpers == null:
+		push_warning("Second Chance: Mod Configuration Menu not found. Using defaults")
 		return
-	var script = load("res://SecondChance/ModConfig.gd")
-	if script == null:
-		push_warning("Second Chance: ModConfig.gd could not be loaded")
-	var node = Node.new()
-	node.set_script(script)
-	add_child(node)
-	node.Setup(self)
-	_spawn_action = script.SPAWN_ACTION
 
+	_config = MCM_Config.new(
+		MOD_ID,                     # The mods unique ID
+		FRIENDLY_NAME,              # The mods name that will be displayed within the MCM
+		DESCRIPTION,                # A short description of the mod
+		_on_config_updated,               # The callback function that will handle all value updates for your mod
+		self                        # The object to call for individual value `on_value_changed` callbacks
+	)
+	
+	_config.CreateIntValue(
+		RARITY_ID,
+		"Token Rarity",
+		"How rarely the Second Chance token appears in loot. 0 - Common, 1 - Rare, 2 - Legendary",
+		2
+	) \
+	.setMinRange(0) \
+	.setMaxRange(2) \
+	.setOnValueChanged("_rarity_changed") \
+	.setMenuPos(1)
+
+	_config.CreateKeycodeValue(
+			SPAWN_ACTION,
+			"[DEV] Spawn token key",
+			"Debug key: spawns a Second Chance token in your inventory",
+			KEY_F5, 
+			MCM_Config.MCM_Key_Types.KEY
+		) \
+		.setMenuPos(2)
+	
+	_config.RegisterMod()
+
+# Called by MCM whenever the player changes and saves values
+func _on_config_updated(config: ConfigFile):
+	pass
+
+func _rarity_changed(valueId, newValue, menu):
+	print("Second chance: applying rarity: " + str(newValue))
+	_apply_rarity(newValue)
+
+# MCM files values under a section named after the value type, so search all sections
+func _find_value(config: ConfigFile, key: String):
+	for section in config.get_sections():
+		if config.has_section_key(section, key):
+			return config.get_value(section, key)
+	return null
+
+func _apply_rarity(rarity: int) -> void:
+	if rarity < 0 or rarity > 2:
+		push_warning("Second Chance: invalid rarity " + str(rarity))
+		return
+	var b1 = _lib.patch(_lib.Registry.ITEMS, TOKEN_ID, { "rarity": rarity })
+	print("Second Chance: patch result "+ str(b1))
+	if(b1 == false):
+		push_warning("Second Chance: failed to patch token rarity")
+		
 func _input(event: InputEvent) -> void:
-	if _spawn_action != "" and InputMap.has_action(_spawn_action):
+	if SPAWN_ACTION != "" and InputMap.has_action(SPAWN_ACTION):
 		# MCM registered the action: honor whatever key the player set
-		if event.is_action_pressed(_spawn_action) and not event.is_echo():
+		if event.is_action_pressed(SPAWN_ACTION) and not event.is_echo():
 			_spawn_token()
 	elif event is InputEventKey and event.pressed and not event.echo \
 			and event.keycode == SPAWN_FALLBACK_KEY:
