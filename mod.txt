@@ -6,4 +6,7 @@ version="0.1.0"
 [autoload]
 SecondChance="res://SecondChance/Main.gd"
 
+[hooks]
+res://Scripts/Character.gd = Death
+
 [registry]
