@@ -1,0 +1,38 @@
+[gd_scene format=3]
+
+; Pickup scene for the Second Chance token, copied from Snus.tscn.
+; Mesh and material are borrowed from Snus as placeholders: swap the two
+; ext_resource paths (ids 5 and 6) once you have your own model.
+
+[ext_resource type="PhysicsMaterial" path="res://Items/Physics/Item_Physics.tres" id="1"]
+[ext_resource type="Script" path="res://Scripts/Pickup.gd" id="2"]
+[ext_resource type="Resource" path="res://SecondChance/Second_Chance_Token.tres" id="3"]
+[ext_resource type="Script" path="res://Scripts/SlotData.gd" id="4"]
+[ext_resource type="ArrayMesh" path="res://Items/Consumables/Snus/Files/MS_Snus.obj" id="5"]
+[ext_resource type="Material" path="res://Items/Consumables/Snus/Files/MT_Snus.tres" id="6"]
+
+[sub_resource type="Resource" id="Resource_token"]
+script = ExtResource("4")
+itemData = ExtResource("3")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_token"]
+size = Vector3(0.08, 0.027, 0.08)
+
+[node name="Second_Chance_Token" type="RigidBody3D" node_paths=PackedStringArray("mesh", "collision") groups=["Item"]]
+collision_layer = 4
+collision_mask = 29
+physics_material_override = ExtResource("1")
+script = ExtResource("2")
+slotData = SubResource("Resource_token")
+mesh = NodePath("Mesh")
+collision = NodePath("Collision")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+layers = 4
+visibility_range_end = 25.0
+mesh = ExtResource("5")
+surface_material_override/0 = ExtResource("6")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.013, 0)
+shape = SubResource("BoxShape3D_token")

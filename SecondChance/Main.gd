@@ -31,6 +31,7 @@ func _register_objects():
 	var result: Dictionary = _lib.register_item({
 		TOKEN_ID: {
 			"item_path":   "res://SecondChance/Second_Chance_Token.tres",
+			"scene_path":  "res://SecondChance/Second_Chance_Token.tscn",
 			"loot_tables": ["LT_Master"],
 		},
 	})

@@ -6,7 +6,7 @@
 
 [ext_resource type="Script" path="res://Scripts/ItemData.gd" id="1"]
 [ext_resource type="Texture2D" path="res://Items/Consumables/Snus/Files/Icon_Snus.png" id="2"]
-[ext_resource type="PackedScene" path="res://Items/Consumables/Snus/Snus_1x1.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://SecondChance/Second_Chance_Token_1x1.tscn" id="3"]
 
 [resource]
 script = ExtResource("1")
@@ -18,7 +18,7 @@ equipment = "Token"
 display = "Token"
 type = "Misc"
 weight = 0.1
-value = 5000
+value = 0
 rarity = 3
 icon = ExtResource("2")
 tetris = ExtResource("3")
@@ -27,6 +27,6 @@ usable = false
 stackable = false
 maxAmount = 1
 material = null
-civilian = false
-industrial = false
+civilian = true
+industrial = true
 military = true
