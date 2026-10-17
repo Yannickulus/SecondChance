@@ -1,12 +1,11 @@
 [gd_resource type="Resource" script_class="ItemData" format=3]
 
-; DRAFT: modeled on Snus.tres. Placeholder assets are borrowed from Snus.
-; Replace icon/tetris with your own once you have a Token scene and art.
+; Icon is assigned at runtime (TokenAssets.gd) because raw PNGs in a mod are not imported.
 ; Paths below are res:// paths inside the game's own pck, so they resolve at runtime.
 
 [ext_resource type="Script" path="res://Scripts/ItemData.gd" id="1"]
-[ext_resource type="Texture2D" path="res://Items/Consumables/Snus/Files/Icon_Snus.png" id="2"]
-[ext_resource type="PackedScene" path="res://SecondChance/Second_Chance_Token_1x1.tscn" id="3"]
+[ext_resource type="Texture2D" path="res://SecondChance/Items/SecondChanceToken/Files/Icon_Token.png" id="2"]
+[ext_resource type="PackedScene" path="res://SecondChance/Items/SecondChanceToken/Second_Chance_Token_1x1.tscn" id="3"]
 
 [resource]
 script = ExtResource("1")

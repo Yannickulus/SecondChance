@@ -2,8 +2,8 @@ extends Node
 
 const MCM_HELPERS = "res://ModConfigurationMenu/Scripts/Doink Oink/MCM_Helpers.tres"
 # Paths
-const TOKEN_ITEM_PATH := "res://SecondChance/Second_Chance_Token.tres"
-const TOKEN_SCENE_PATH := "res://SecondChance/Second_Chance_Token.tscn"
+const TOKEN_ITEM_PATH := "res://SecondChance/Items/SecondChanceToken/Second_Chance_Token.tres"
+const TOKEN_SCENE_PATH := "res://SecondChance/Items/SecondChanceToken/Second_Chance_Token.tscn"
 const CONFIG_PATH := "res://SecondChance/ModConfig.gd"
 
 # Config
@@ -56,13 +56,6 @@ func _register_objects():
 	_lib.register(_lib.Registry.SCENES, TOKEN_ID, tokenScene)
 	_lib.register(_lib.Registry.LOOT, TOKEN_ID, {"item": token, "table": "LT_Master"})
 	_registered = true
-	# var result: Dictionary = _lib.register_item({
-	# 	TOKEN_ID: {
-	# 		"item_path":   TOKEN_ITEM_PATH,
-	# 		"scene_path":  TOKEN_SCENE_PATH,
-	# 		"loot_tables": ["LT_Master"],
-	# 	},
-	# })
 
 func _on_lib_ready():
 	_lib.hook("character-death-pre", _on_death_pre, 0)# Ensure this triggers before other pre-death events, other mods (ie. RecoverableRemains) can work off of what this mod sets on death
