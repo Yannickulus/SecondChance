@@ -21,13 +21,12 @@ roughness = 0.5
 material = SubResource("StandardMaterial3D_token")
 top_radius = 0.027
 bottom_radius = 0.027
-height = 0.006
+height = 0.03
 radial_segments = 48
 rings = 1
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_token"]
-height = 0.012
-radius = 0.03
+[sub_resource type="BoxShape3D" id="BoxShape3D_token"]
+size = Vector3(0.055, 0.03, 0.055)
 
 [node name="Second_Chance_Token" type="RigidBody3D" node_paths=PackedStringArray("mesh", "collision") groups=["Item"]]
 collision_layer = 4
@@ -39,11 +38,11 @@ mesh = NodePath("Mesh")
 collision = NodePath("Collision")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.003, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
 layers = 4
 visibility_range_end = 25.0
 mesh = SubResource("CylinderMesh_token")
 
 [node name="Collision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.006, 0)
-shape = SubResource("CylinderShape3D_token")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
+shape = SubResource("BoxShape3D_token")
