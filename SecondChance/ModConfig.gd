@@ -39,14 +39,15 @@ func _ready():
 	.setMaxRange(2) \
 	.setMenuPos(1)
 
-	_config.CreateKeycodeValue(
-			SPAWN_ACTION,
-			"[DEV] Spawn token key",
-			"Debug key: spawns a Second Chance token in your inventory",
-			KEY_F5, 
-			MCM_Config.MCM_Key_Types.KEY
-		) \
-		.setMenuPos(2)
+
+#	_config.CreateKeycodeValue(
+#			SPAWN_ACTION,
+#			"[DEV] Spawn token key",
+#			"Debug key: spawns a Second Chance token in your inventory",
+#			KEY_F5, 
+#			MCM_Config.MCM_Key_Types.KEY
+#		) \
+#		.setMenuPos(2)
 
 	_config.RegisterMod()
 	_load_saved_values()

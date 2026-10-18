@@ -26,10 +26,11 @@ radial_segments = 48
 rings = 1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_token"]
-size = Vector3(0.055, 0.03, 0.055)
+size = Vector3(0.08, 0.027, 0.08)
 
 [node name="Second_Chance_Token" type="RigidBody3D" node_paths=PackedStringArray("mesh", "collision") groups=["Item"]]
 collision_layer = 4
+continuous_cd = true
 collision_mask = 29
 physics_material_override = ExtResource("1")
 script = ExtResource("2")
@@ -44,5 +45,5 @@ visibility_range_end = 25.0
 mesh = SubResource("CylinderMesh_token")
 
 [node name="Collision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.013, 0)
 shape = SubResource("BoxShape3D_token")
